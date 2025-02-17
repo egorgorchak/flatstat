@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
-	"flatstat/data"
+	"flatstat/internal/data"
 	"fmt"
 	"io"
 	"net/http"
@@ -21,6 +21,8 @@ type Info struct {
 func (*Info) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	if b, err := io.ReadAll(req.Body); err == nil {
 		link := string(b)
+		rw.Header().Set("Content-Type", "application/json")
+		rw.WriteHeader(201)
 		getInfo(link, rw)
 	}
 	defer req.Body.Close()
